@@ -11,9 +11,9 @@ string insertarParidad(string mensaje) {
     trama[4] = mensaje[1]; 
     trama[5] = mensaje[2]; 
     trama[6] = mensaje[3]; 
-    trama[0] = ((trama[2] - '0') ^ (trama[4] - '0') ^ (trama[6] - '0')) + '0'; // P1
-    trama[1] = ((trama[2] - '0') ^ (trama[5] - '0') ^ (trama[6] - '0')) + '0'; // P2
-    trama[3] = ((trama[4] - '0') ^ (trama[5] - '0') ^ (trama[6] - '0')) + '0'; // P4
+    trama[0] = ((trama[2] - '0') ^ (trama[4] - '0') ^ (trama[6] - '0')) + '0'; 
+    trama[1] = ((trama[2] - '0') ^ (trama[5] - '0') ^ (trama[6] - '0')) + '0'; 
+    trama[3] = ((trama[4] - '0') ^ (trama[5] - '0') ^ (trama[6] - '0')) + '0'; 
 
     string resultado(trama.begin(), trama.end());
     return resultado;
