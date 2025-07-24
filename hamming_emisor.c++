@@ -1,30 +1,34 @@
 #include <iostream>
+#include <vector>
 #include <string>
 using namespace std;
 
-string generarTramaHamming(string datos) {
-    char d1 = datos[0];
-    char d2 = datos[1];
-    char d3 = datos[2];
-    char d4 = datos[3];
+string generarTramaHammingExtendido(const string& datos) {
+    vector<char> trama(16, '0'); 
 
-    char p1 = ((d1 - '0') ^ (d2 - '0') ^ (d4 - '0')) + '0';
-    char p2 = ((d1 - '0') ^ (d3 - '0') ^ (d4 - '0')) + '0';
-    char p4 = ((d2 - '0') ^ (d3 - '0') ^ (d4 - '0')) + '0';
+    int j = 0;
+    for (int i = 1; i <= 15; i++) {
+        if ((i & (i - 1)) != 0) { 
+            trama[i] = datos[j++];
+        }
+    }
 
-    string trama = "";
-    trama += p1;  
-    trama += p2;  
-    trama += d1;  
-    trama += p4;   
-    trama += d2;   
-    trama += d3;   
-    trama += d4;   
+    for (int p = 1; p <= 8; p <<= 1) {
+        int parity = 0;
+        for (int i = 1; i <= 15; i++) {
+            if (i & p) parity ^= (trama[i] - '0');
+        }
+        trama[p] = parity + '0';
+    }
 
-    return trama;
+    string resultado;
+    for (int i = 1; i <= 15; i++) {
+        resultado += trama[i];
+    }
+    return resultado;
 }
 
-bool esBinario(string s) {
+bool esBinario(const string& s) {
     for (char c : s)
         if (c != '0' && c != '1') return false;
     return true;
@@ -32,16 +36,16 @@ bool esBinario(string s) {
 
 int main() {
     string entrada;
-    cout << "Ingrese un mensaje de 4 bits (ej: 1011): ";
+    cout << "Ingrese un mensaje de 11 bits (solo 0s y 1s): ";
     cin >> entrada;
 
-    if (entrada.length() != 4 || !esBinario(entrada)) {
-        cout << "Error: Ingresa exactamente 4 bits binarios (0 o 1)." << endl;
+    if (entrada.size() != 11 || !esBinario(entrada)) {
+        cout << "Error: Ingresa exactamente 11 bits binarios." << endl;
         return 1;
     }
 
-    string trama = generarTramaHamming(entrada);
-    cout << "Trama generada (Hamming 7,4): " << trama << endl;
+    string trama = generarTramaHammingExtendido(entrada);
+    cout << "Trama Hamming generada (15 bits): " << trama << endl;
 
     return 0;
 }
