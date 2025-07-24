@@ -4,11 +4,10 @@
 using namespace std;
 
 string generarTramaHammingExtendido(const string& datos) {
-    vector<char> trama(16, '0'); 
-
+    vector<char> trama(17, '0');
     int j = 0;
     for (int i = 1; i <= 15; i++) {
-        if ((i & (i - 1)) != 0) { 
+        if ((i & (i - 1)) != 0) {
             trama[i] = datos[j++];
         }
     }
@@ -21,10 +20,17 @@ string generarTramaHammingExtendido(const string& datos) {
         trama[p] = parity + '0';
     }
 
-    string resultado;
+    int total_parity = 0;
     for (int i = 1; i <= 15; i++) {
+        total_parity ^= (trama[i] - '0');
+    }
+    trama[16] = total_parity + '0';
+
+    string resultado;
+    for (int i = 1; i <= 16; i++) {
         resultado += trama[i];
     }
+
     return resultado;
 }
 
@@ -45,7 +51,7 @@ int main() {
     }
 
     string trama = generarTramaHammingExtendido(entrada);
-    cout << "Trama Hamming generada (15 bits): " << trama << endl;
+    cout << "Trama Hamming extendida generada (16 bits): " << trama << endl;
 
     return 0;
 }
