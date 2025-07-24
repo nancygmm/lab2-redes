@@ -1,22 +1,33 @@
 #include <iostream>
-#include <vector>
 #include <string>
-
 using namespace std;
 
-string insertarParidad(string mensaje) {
-    vector<char> trama(7);
+string generarTramaHamming(string datos) {
+    char d1 = datos[0];
+    char d2 = datos[1];
+    char d3 = datos[2];
+    char d4 = datos[3];
 
-    trama[2] = mensaje[0]; 
-    trama[4] = mensaje[1]; 
-    trama[5] = mensaje[2]; 
-    trama[6] = mensaje[3]; 
-    trama[0] = ((trama[2] - '0') ^ (trama[4] - '0') ^ (trama[6] - '0')) + '0'; 
-    trama[1] = ((trama[2] - '0') ^ (trama[5] - '0') ^ (trama[6] - '0')) + '0'; 
-    trama[3] = ((trama[4] - '0') ^ (trama[5] - '0') ^ (trama[6] - '0')) + '0'; 
+    char p1 = ((d1 - '0') ^ (d2 - '0') ^ (d4 - '0')) + '0';
+    char p2 = ((d1 - '0') ^ (d3 - '0') ^ (d4 - '0')) + '0';
+    char p4 = ((d2 - '0') ^ (d3 - '0') ^ (d4 - '0')) + '0';
 
-    string resultado(trama.begin(), trama.end());
-    return resultado;
+    string trama = "";
+    trama += p1;  
+    trama += p2;  
+    trama += d1;  
+    trama += p4;   
+    trama += d2;   
+    trama += d3;   
+    trama += d4;   
+
+    return trama;
+}
+
+bool esBinario(string s) {
+    for (char c : s)
+        if (c != '0' && c != '1') return false;
+    return true;
 }
 
 int main() {
@@ -24,13 +35,13 @@ int main() {
     cout << "Ingrese un mensaje de 4 bits (ej: 1011): ";
     cin >> entrada;
 
-    if (entrada.size() != 4) {
-        cout << "Error: El mensaje debe tener exactamente 4 bits." << endl;
+    if (entrada.length() != 4 || !esBinario(entrada)) {
+        cout << "Error: Ingresa exactamente 4 bits binarios (0 o 1)." << endl;
         return 1;
     }
 
-    string trama = insertarParidad(entrada);
-    cout << "Trama con bits de paridad (Hamming 7,4): " << trama << endl;
+    string trama = generarTramaHamming(entrada);
+    cout << "Trama generada (Hamming 7,4): " << trama << endl;
 
     return 0;
 }
